@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CrowdFlow AI</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        🛡️ CrowdFlow <span>AI</span>
+    </div>
+
+    <div class="system-status">
+        <span></span> SYSTEM ONLINE
+    </div>
+
+</header>
+
+
+<main>
+
+    <!-- CAMERA -->
+
+    <section class="camera-section">
+
+        <div class="section-title">
+
+            <h2>Live Camera Feed</h2>
+
+            <select id="cameraSelect">
+                <option>Camera 01</option>
+                <option>Camera 02</option>
+                <option>Camera 03</option>
+            </select>
+
+        </div>
+
+        <div class="camera">
+
+            <div class="video-wrapper">
+
+                <video
+                    id="crowdVideo"
+                    controls
+                    playsinline
+                >
+                    Your browser does not support video.
+                </video>
+
+                <canvas id="detectionCanvas"></canvas>
+
+            </div>
+
+            <div
+                id="uploadMessage"
+                class="camera-message"
+            >
+
+                <div class="camera-icon">📹</div>
+
+                <h3>NO CAMERA FEED</h3>
+
+                <p>
+                    Upload a crowd video to begin AI analysis.
+                </p>
+
+                <label
+                    for="videoUpload"
+                    class="upload-btn"
+                >
+                    📁 UPLOAD CROWD VIDEO
+                </label>
+
+                <input
+                    type="file"
+                    id="videoUpload"
+                    accept="video/*"
+                    hidden
+                >
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ANALYTICS -->
+
+    <section class="analytics">
+
+        <h2>AI Analytics</h2>
+
+        <div class="stats">
+
+            <div class="card">
+                <div class="icon">👥</div>
+                <div>
+                    <p>People Detected</p>
+                    <h3 id="people">0</h3>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="icon">📊</div>
+                <div>
+                    <p>Density</p>
+                    <h3 id="density">Low</h3>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="icon">⚠️</div>
+                <div>
+                    <p>Risk Level</p>
+                    <h3 id="risk">LOW</h3>
+
+                    <div
+                        class="crowd-alert low"
+                        id="crowdAlert"
+                    >
+                        🟢 CROWD LEVEL: LOW
+                    </div>
+
+                    <div
+                        class="recommended-action"
+                        id="recommendedAction"
+                    >
+                        Continue monitoring the crowd.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="icon">🚪</div>
+                <div>
+                    <p>Recommended Gates</p>
+                    <h3 id="activeGates">4</h3>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- SMART ZONES -->
+
+        <div class="zone-monitor">
+
+            <h3>🧠 Smart Zone Intelligence</h3>
+
+            <div class="zone-grid">
+
+                <div class="zone-card">
+
+                    <span>ZONE A</span>
+
+                    <strong id="zoneA">0</strong>
+
+                    <small id="zoneARisk">LOW</small>
+
+                    <p id="zoneAReason">
+                        Monitoring...
+                    </p>
+
+                    <div
+                        class="zone-prediction"
+                        id="zoneAPrediction"
+                    >
+                        Prediction: Monitoring
+                    </div>
+
+                </div>
+
+
+                <div class="zone-card">
+
+                    <span>ZONE B</span>
+
+                    <strong id="zoneB">0</strong>
+
+                    <small id="zoneBRisk">LOW</small>
+
+                    <p id="zoneBReason">
+                        Monitoring...
+                    </p>
+
+                    <div
+                        class="zone-prediction"
+                        id="zoneBPrediction"
+                    >
+                        Prediction: Monitoring
+                    </div>
+
+                </div>
+
+
+                <div class="zone-card">
+
+                    <span>ZONE C</span>
+
+                    <strong id="zoneC">0</strong>
+
+                    <small id="zoneCRisk">LOW</small>
+
+                    <p id="zoneCReason">
+                        Monitoring...
+                    </p>
+
+                    <div
+                        class="zone-prediction"
+                        id="zoneCPrediction"
+                    >
+                        Prediction: Monitoring
+                    </div>
+
+                </div>
+
+
+                <div class="zone-card">
+
+                    <span>ZONE D</span>
+
+                    <strong id="zoneD">0</strong>
+
+                    <small id="zoneDRisk">LOW</small>
+
+                    <p id="zoneDReason">
+                        Monitoring...
+                    </p>
+
+                    <div
+                        class="zone-prediction"
+                        id="zoneDPrediction"
+                    >
+                        Prediction: Monitoring
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="highest-zone">
+
+                🔍 Highest Crowd Risk:
+
+                <strong id="highestRiskZone">
+                    --
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HEATMAP -->
+
+    <section class="heatmap-section">
+
+        <h2>Venue Crowd Heatmap</h2>
+
+        <div class="heatmap-container">
+
+            <canvas id="heatmapCanvas"></canvas>
+
+            <div class="hm-zone-label hm-zone-a">ZONE A</div>
+            <div class="hm-zone-label hm-zone-b">ZONE B</div>
+            <div class="hm-zone-label hm-zone-c">ZONE C</div>
+            <div class="hm-zone-label hm-zone-d">ZONE D</div>
+
+        </div>
+
+        <div class="heatmap-legend">
+            <span>LOW</span>
+            <div class="legend-bar"></div>
+            <span>HIGH</span>
+        </div>
+
+    </section>
+
+
+    <!-- LIVE TREND -->
+
+    <section class="trend-panel">
+
+        <div class="section-title">
+            <h2>📈 Live Crowd Trend</h2>
+            <span class="trend-live-badge" id="trendLiveBadge">— sampling every 1s</span>
+        </div>
+
+        <div class="trend-container">
+            <canvas id="trendCanvas"></canvas>
+        </div>
+
+        <div class="trend-footer">
+            <span>Peak this session: <strong id="trendPeakInline">0</strong></span>
+            <span>Current: <strong id="trendCurrentInline">0</strong></span>
+        </div>
+
+    </section>
+
+
+    <!-- CROWD FLOW -->
+
+    <section class="flow-status">
+
+        <h3>AI Crowd Flow Prediction</h3>
+
+        <div class="flow-grid">
+
+            <div>
+                <span>Movement</span>
+                <strong id="movementStatus">
+                    Waiting...
+                </strong>
+            </div>
+
+            <div>
+                <span>Flow Direction</span>
+                <strong id="flowDirection">
+                    --
+                </strong>
+            </div>
+
+            <div>
+                <span>Congestion Forecast</span>
+                <strong id="congestionForecast">
+                    Low
+                </strong>
+            </div>
+
+        </div>
+
+        <div
+            id="flowWarning"
+            class="flow-warning"
+        >
+            No congestion detected
+        </div>
+
+        <div
+            id="surgeAlert"
+            class="surge-alert hidden"
+        >
+            🚨 SURGE DETECTED — crowd count rose sharply in the last few seconds
+        </div>
+
+    </section>
+
+
+    <!-- GATE INTELLIGENCE -->
+
+    <section class="intelligence-panel">
+
+        <h2>🚪 Dynamic Gate Intelligence</h2>
+
+        <div class="gate-grid">
+
+            <div class="gate-status-card">
+                <span>GATE A</span>
+                <strong id="gateAStatus">NORMAL</strong>
+                <p id="gateAAction">
+                    Normal operation
+                </p>
+            </div>
+
+            <div class="gate-status-card">
+                <span>GATE B</span>
+                <strong id="gateBStatus">NORMAL</strong>
+                <p id="gateBAction">
+                    Normal operation
+                </p>
+            </div>
+
+            <div class="gate-status-card">
+                <span>GATE C</span>
+                <strong id="gateCStatus">NORMAL</strong>
+                <p id="gateCAction">
+                    Normal operation
+                </p>
+            </div>
+
+            <div class="gate-status-card">
+                <span>GATE D</span>
+                <strong id="gateDStatus">NORMAL</strong>
+                <p id="gateDAction">
+                    Normal operation
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- WHAT IF -->
+
+    <section class="what-if">
+
+        <h2>🧪 What-If Crowd Simulator</h2>
+
+        <p class="panel-description">
+            Test how the safety system responds if crowd size increases.
+        </p>
+
+        <div class="simulator-controls">
+
+            <label for="simulationPeople">
+                Additional People
+            </label>
+
+            <input
+                type="range"
+                id="simulationPeople"
+                min="0"
+                max="100"
+                value="0"
+            >
+
+            <strong id="simulationValue">
+                +0 people
+            </strong>
+
+        </div>
+
+        <div class="simulation-result">
+
+            <span>Predicted Crowd</span>
+            <strong id="simulatedCrowd">
+                0
+            </strong>
+
+            <span>Predicted Risk</span>
+            <strong id="simulatedRisk">
+                LOW
+            </strong>
+
+            <p id="simulationAdvice">
+                No additional crowd simulated.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- SPACE CAPACITY CHECK -->
+
+    <section class="capacity-panel">
+
+        <h2>📐 Space Capacity Check</h2>
+
+        <p class="panel-description">
+            Enter the venue's area to check whether the crowd
+            can be safely contained at recognized density
+            standards.
+        </p>
+
+        <div class="capacity-inputs">
+
+            <div class="capacity-field">
+                <label for="spaceArea">Space Area</label>
+                <div class="capacity-input-row">
+                    <input
+                        type="number"
+                        id="spaceArea"
+                        min="1"
+                        step="1"
+                        value="500"
+                    >
+                    <select id="areaUnit">
+                        <option value="sqm">m²</option>
+                        <option value="sqft">ft²</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="capacity-field">
+                <label for="densityStandard">Safety Standard</label>
+                <select id="densityStandard">
+                    <option value="2">Comfortable — 2 people/m²</option>
+                    <option value="4" selected>Event Max — 4 people/m²</option>
+                    <option value="5">Absolute Max — 5 people/m²</option>
+                </select>
+            </div>
+
+            <div class="capacity-field">
+                <label for="capacitySource">Crowd Count Source</label>
+                <select id="capacitySource">
+                    <option value="live" selected>Live Detected Count</option>
+                    <option value="simulated">What-If Simulated Count</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="capacity-result">
+
+            <div class="capacity-meter">
+                <div class="capacity-bar-track">
+                    <div
+                        class="capacity-bar-fill"
+                        id="capacityBarFill"
+                    ></div>
+                </div>
+                <div class="capacity-meter-labels">
+                    <strong id="capacityCurrentCount">0</strong>
+                    of
+                    <strong id="capacityMaxCount">0</strong>
+                    safe capacity
+                </div>
+            </div>
+
+            <div
+                class="capacity-status"
+                id="capacityStatus"
+            >
+                ENTER SPACE AREA
+            </div>
+
+            <p id="capacityExplanation">
+                Enter a space area to calculate safe capacity.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- EVACUATION & STAFFING -->
+
+    <section class="operations-panel">
+
+        <h2>🕐 Evacuation & Staffing Plan</h2>
+
+        <p class="panel-description">
+            Estimated time to clear the venue through currently
+            active gates, and recommended staffing for the crowd
+            count used in the capacity check above.
+        </p>
+
+        <div class="ops-grid">
+
+            <div class="ops-card">
+                <span class="ops-label">Estimated Evacuation Time</span>
+                <strong class="ops-value" id="evacTime">—</strong>
+                <p class="ops-detail" id="evacDetail">Waiting for crowd data...</p>
+                <div class="ops-subrow">
+                    <span>Active gates: <strong id="evacOpenGates">4 / 4</strong></span>
+                    <span>Throughput: <strong id="evacThroughput">0 people/min</strong></span>
+                </div>
+            </div>
+
+            <div class="ops-card">
+                <span class="ops-label">Recommended Staffing</span>
+                <strong class="ops-value" id="staffTotal">0</strong>
+                <p class="ops-detail">Total personnel recommended for current conditions.</p>
+                <div class="ops-subrow">
+                    <span>Stewards: <strong id="staffStewards">0</strong></span>
+                    <span>Medical: <strong id="staffMedical">0</strong></span>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- EMERGENCY ENGINE -->
+
+    <section class="emergency-panel">
+
+        <h2>🚨 Emergency Decision Engine</h2>
+
+        <div
+            id="emergencyStatus"
+            class="emergency-status normal"
+        >
+            SYSTEM STATUS: NORMAL
+        </div>
+
+        <p id="emergencyReason">
+            No immediate emergency indicators detected.
+        </p>
+
+        <strong id="emergencyAction">
+            Continue monitoring.
+        </strong>
+
+    </section>
+
+
+    <!-- SAFETY SCORE -->
+
+    <section class="safety-panel">
+
+        <h2>🛡️ Crowd Safety Score</h2>
+
+        <div class="safety-score">
+
+            <div
+                class="score-circle"
+                id="safetyScore"
+            >
+                100
+            </div>
+
+            <div>
+
+                <h3 id="safetyStatus">
+                    SAFE
+                </h3>
+
+                <p id="safetyExplanation">
+                    Crowd conditions are currently stable.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- AI RECOMMENDATION -->
+
+    <section class="recommendation">
+
+        <h2>🤖 AI Recommendation</h2>
+
+        <div class="recommendation-box">
+
+            <div class="warning">
+                ⚠️
+            </div>
+
+            <div>
+
+                <h3 id="recommendationTitle">
+                    Monitoring Crowd Flow
+                </h3>
+
+                <p id="recommendationText">
+                    Start the simulation to allow the AI
+                    system to analyze crowd movement.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- EVENT HISTORY -->
+
+    <section class="history-panel">
+
+        <h2>📋 AI Event History</h2>
+
+        <div id="eventHistory">
+
+            <div class="history-item">
+                <span>System</span>
+                <strong>Waiting for crowd data...</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- SESSION REPORT — placed as its own full-width section before footer -->
+<div class="report-wrapper">
+
+    <section class="report-panel">
+
+        <h2>📄 Session Report</h2>
+
+        <p class="panel-description">
+            A running summary of this monitoring session, exportable
+            for post-event review or compliance records.
+        </p>
+
+        <div class="report-stats">
+            <div>
+                <span>Session Duration</span>
+                <strong id="reportDuration">0m 0s</strong>
+            </div>
+            <div>
+                <span>Peak Crowd Count</span>
+                <strong id="reportPeak">0</strong>
+            </div>
+            <div>
+                <span>Average Crowd Count</span>
+                <strong id="reportAverage">0</strong>
+            </div>
+        </div>
+
+        <button
+            id="exportReportBtn"
+            class="export-btn"
+        >
+            ⬇ Export Session Report
+        </button>
+
+    </section>
+
+</div>
+
+
+<footer>
+
+    <p>
+        CrowdFlow AI © 2026 |
+        AI-powered crowd management prototype
+    </p>
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+
+<script src="script.js"></script>
+
+</body>
+</html>
